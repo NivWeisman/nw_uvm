@@ -1,1 +1,139 @@
 # nw_uvm
+
+## Overview
+
+`nw_uvm` is an intermediate layer between UVM 1.2 and user-defined verification code. It provides typedefs and macro wrappers that replace the "uvm" prefix with "nw" while maintaining the same casing and structure as the original UVM 1.2.
+
+## Purpose
+
+This package allows users to:
+- Use NW-prefixed types and macros instead of UVM-prefixed ones
+- Maintain compatibility with UVM 1.2
+- Keep all original casing and naming conventions (only prefix changes)
+- Follow the same file structure as UVM for easy reference
+
+## Usage
+
+### Import the Package
+
+```systemverilog
+import uvm_pkg::*;
+import nw_pkg::*;
+```
+
+### Use NW Types
+
+```systemverilog
+class my_test extends nw_test;
+  `nw_component_utils(my_test)
+  
+  function new(string name = "my_test", nw_component parent = null);
+    super.new(name, parent);
+  endfunction
+  
+  virtual task run_phase(nw_phase phase);
+    `nw_info("MY_TEST", "Test is running")
+  endtask
+endclass
+```
+
+### Use NW Macros
+
+All UVM macros have NW equivalents with define guards to prevent redefinitions:
+
+- `nw_info` → calls `uvm_info`
+- `nw_error` → calls `uvm_error`
+- `nw_warning` → calls `uvm_warning`
+- `nw_fatal` → calls `uvm_fatal`
+- `nw_component_utils` → calls `uvm_component_utils`
+- `nw_object_utils` → calls `uvm_object_utils`
+- And many more...
+
+## File Structure
+
+The package follows the UVM 1.2 directory structure:
+
+```
+nw_uvm/
+├── src/
+│   ├── nw_pkg.sv           # Main package file
+│   ├── base/               # Base class typedefs
+│   │   ├── nw_object.svh
+│   │   ├── nw_transaction.svh
+│   │   ├── nw_component.svh
+│   │   ├── nw_root.svh
+│   │   ├── nw_report_object.svh
+│   │   ├── nw_factory.svh
+│   │   ├── nw_printer.svh
+│   │   ├── nw_comparer.svh
+│   │   ├── nw_packer.svh
+│   │   ├── nw_recorder.svh
+│   │   └── nw_misc.svh
+│   ├── comps/              # Component typedefs
+│   │   └── nw_comps.svh
+│   ├── tlm1/               # TLM typedefs
+│   │   └── nw_tlm.svh
+│   ├── seq/                # Sequence typedefs
+│   │   └── nw_sequence.svh
+│   ├── reg/                # Register model typedefs
+│   │   └── nw_reg.svh
+│   └── macros/             # Macro wrappers
+│       └── nw_macros.svh
+```
+
+## Key Features
+
+1. **Type Safety**: All UVM types are typedef'd with the "nw" prefix
+2. **Macro Wrappers**: All macros wrapped with define guards
+3. **Same Casing**: Original UVM casing preserved (e.g., `uvm_component` → `nw_component`)
+4. **Same Structure**: Files organized following UVM's directory structure
+5. **Full Coverage**: Includes base classes, components, TLM, sequences, and register models
+
+## Examples
+
+### Creating a Component
+
+```systemverilog
+class my_driver extends nw_driver #(my_transaction);
+  `nw_component_utils(my_driver)
+  
+  function new(string name, nw_component parent);
+    super.new(name, parent);
+  endfunction
+  
+  virtual task run_phase(nw_phase phase);
+    `nw_info(get_type_name(), "Driver started")
+  endtask
+endclass
+```
+
+### Using Sequences
+
+```systemverilog
+class my_sequence extends nw_sequence #(my_transaction);
+  `nw_object_utils(my_sequence)
+  
+  virtual task body();
+    my_transaction tr;
+    `nw_do(tr)
+  endtask
+endclass
+```
+
+### Field Automation
+
+```systemverilog
+class my_transaction extends nw_sequence_item;
+  rand bit [31:0] addr;
+  rand bit [31:0] data;
+  
+  `nw_object_utils_begin(my_transaction)
+    `nw_field_int(addr, UVM_ALL_ON)
+    `nw_field_int(data, UVM_ALL_ON)
+  `nw_object_utils_end
+endclass
+```
+
+## License
+
+See LICENSE file for details.
