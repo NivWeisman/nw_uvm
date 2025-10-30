@@ -49,9 +49,9 @@ All UVM macros have NW equivalents with define guards to prevent redefinitions:
 - `nw_object_utils(TYPE)` → calls `uvm_object_utils`
 - And many more...
 
-### Use NW Constants
+### Use NW Parameters
 
-All UVM constants have NW equivalents:
+All UVM constants are available as NW parameters:
 
 - `NW_NONE`, `NW_LOW`, `NW_MEDIUM`, `NW_HIGH`, `NW_FULL`, `NW_DEBUG` (verbosity)
 - `NW_DEFAULT`, `NW_ALL_ON`, `NW_NOCOMPARE`, `NW_NOCOPY`, `NW_NOPRINT` (field flags)
@@ -78,7 +78,7 @@ nw_uvm/
 │   │   ├── nw_packer.svh
 │   │   ├── nw_recorder.svh
 │   │   ├── nw_misc.svh
-│   │   └── nw_defines.svh
+│   │   └── nw_parameters.svh
 │   ├── comps/              # Component typedefs
 │   │   └── nw_comps.svh
 │   ├── tlm1/               # TLM typedefs
