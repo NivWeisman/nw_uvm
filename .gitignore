@@ -1,0 +1,29 @@
+# Simulation artifacts
+*.log
+*.vstf
+*.vcd
+*.wlf
+*.ucdb
+*.shm
+work/
+simv*
+csrc/
+DVEfiles/
+*.fsdb
+*.conf
+.vlogansetup*
+*.vpd
+*.key
+novas.*
+verdiLog/
+*.svf
+
+# OS artifacts
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Temporary files
+/tmp/
+*.tmp
