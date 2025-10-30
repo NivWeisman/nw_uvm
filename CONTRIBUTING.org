@@ -1,12 +1,12 @@
-# Contributing to nw_uvm
+#+TITLE: Contributing to nw_uvm
 
 Thank you for your interest in contributing to nw_uvm!
 
-## Project Structure
+* Project Structure
 
 The nw_uvm project is organized to mirror the UVM 1.2 structure:
 
-```
+#+BEGIN_EXAMPLE
 nw_uvm/
 ├── src/
 │   ├── nw_pkg.sv              # Main package file
@@ -17,26 +17,26 @@ nw_uvm/
 │   ├── seq/                    # Sequence typedefs
 │   └── reg/                    # Register model typedefs
 ├── examples/                   # Usage examples
-├── README.md                   # Project overview
-└── USAGE.md                    # Detailed usage guide
-```
+├── README.org                  # Project overview
+└── USAGE.org                   # Detailed usage guide
+#+END_EXAMPLE
 
-## Coding Guidelines
+* Coding Guidelines
 
-### 1. Typedef Naming
+** 1. Typedef Naming
 
 All typedefs must follow this pattern:
-- Take the original UVM type name (e.g., `uvm_component`)
-- Replace "uvm" prefix with "nw" (e.g., `nw_component`)
+- Take the original UVM type name (e.g., =uvm_component=)
+- Replace "uvm" prefix with "nw" (e.g., =nw_component=)
 - Preserve the exact casing of the rest of the name
 
 Example:
-```systemverilog
+#+BEGIN_SRC systemverilog
 typedef uvm_component nw_component;
 typedef uvm_sequence_item nw_sequence_item;
-```
+#+END_SRC
 
-### 2. Macro Naming
+** 2. Macro Naming
 
 All macro wrappers must:
 - Replace "uvm" prefix with "nw"
@@ -45,23 +45,23 @@ All macro wrappers must:
 - Call the corresponding UVM macro
 
 Example:
-```systemverilog
+#+BEGIN_SRC systemverilog
 `ifndef nw_info
   `define nw_info(ID, MSG) \
     `uvm_info(ID, MSG, UVM_NONE)
 `endif
-```
+#+END_SRC
 
-### 3. File Organization
+** 3. File Organization
 
-- Each file should have a header guard using `NW_<FILENAME>_SVH` format
+- Each file should have a header guard using =NW_<FILENAME>_SVH= format
 - Files should be organized by category (base, comps, macros, etc.)
 - Follow the UVM 1.2 directory structure
 
-### 4. File Headers
+** 4. File Headers
 
 All files should include a header:
-```systemverilog
+#+BEGIN_SRC systemverilog
 //----------------------------------------------------------------------
 // Copyright (c) 2025 by Niv Weisman
 // <filename> - <description>
@@ -73,9 +73,9 @@ All files should include a header:
 // Content here
 
 `endif // <HEADER_GUARD>
-```
+#+END_SRC
 
-## Adding New Typedefs
+* Adding New Typedefs
 
 When adding new typedefs:
 
@@ -83,53 +83,53 @@ When adding new typedefs:
 2. Add the typedef to the appropriate .svh file
 3. Ensure the typedef follows the naming convention
 4. Update the main package file if adding a new include file
-5. Add documentation to USAGE.md if it's a commonly used type
+5. Add documentation to USAGE.org if it's a commonly used type
 
 Example:
-```systemverilog
+#+BEGIN_SRC systemverilog
 // In src/base/nw_object.svh
 typedef uvm_new_class nw_new_class;
-```
+#+END_SRC
 
-## Adding New Macros
+* Adding New Macros
 
 When adding new macro wrappers:
 
-1. Add to `src/macros/nw_macros.svh`
+1. Add to =src/macros/nw_macros.svh=
 2. Include define guard
 3. Call the corresponding UVM macro
 4. Add to the appropriate section (Message, Object Utility, Field Automation, etc.)
 
 Example:
-```systemverilog
+#+BEGIN_SRC systemverilog
 `ifndef nw_new_macro
   `define nw_new_macro(ARG1, ARG2) \
     `uvm_new_macro(ARG1, ARG2)
 `endif
-```
+#+END_SRC
 
-## Testing
+* Testing
 
 When making changes:
 
-1. Verify that all includes are correct in `nw_pkg.sv`
+1. Verify that all includes are correct in =nw_pkg.sv=
 2. Check that header guards are properly formatted
 3. Ensure no syntax errors in SystemVerilog
 4. Update examples if adding significant new features
-5. Update documentation (README.md, USAGE.md)
+5. Update documentation (README.org, USAGE.org)
 
-## Documentation
+* Documentation
 
-- **README.md**: High-level overview and quick start
-- **USAGE.md**: Detailed usage guide with examples
-- **examples/**: Working code examples
+- *README.org*: High-level overview and quick start
+- *USAGE.org*: Detailed usage guide with examples
+- *examples/*: Working code examples
 
 When adding features:
-- Update README.md if it changes the overall structure
-- Update USAGE.md with detailed usage information
+- Update README.org if it changes the overall structure
+- Update USAGE.org with detailed usage information
 - Add examples demonstrating the new feature
 
-## Pull Request Process
+* Pull Request Process
 
 1. Fork the repository
 2. Create a feature branch
@@ -138,7 +138,7 @@ When adding features:
 5. Update documentation
 6. Submit a pull request with a clear description
 
-## Code Review
+* Code Review
 
 All submissions require review. We will check:
 
@@ -149,10 +149,10 @@ All submissions require review. We will check:
 - Documentation is updated
 - Examples work correctly
 
-## Questions?
+* Questions?
 
 If you have questions about contributing, please open an issue for discussion.
 
-## License
+* License
 
 By contributing to nw_uvm, you agree that your contributions will be licensed under the same license as the project.

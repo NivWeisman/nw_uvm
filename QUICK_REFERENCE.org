@@ -1,61 +1,61 @@
-# nw_uvm Quick Reference
+#+TITLE: nw_uvm Quick Reference
 
-## Most Common Types
+* Most Common Types
 
-### Base Classes
-```systemverilog
+** Base Classes
+#+BEGIN_SRC systemverilog
 nw_object           // Base for all UVM objects
 nw_component        // Base for all UVM components
 nw_transaction      // Base for transactions
 nw_sequence_item    // Base for sequence items
-```
+#+END_SRC
 
-### Test Components
-```systemverilog
+** Test Components
+#+BEGIN_SRC systemverilog
 nw_test             // Test base class
 nw_env              // Environment base class
 nw_agent            // Agent base class
 nw_driver           // Driver base class
 nw_monitor          // Monitor base class
 nw_scoreboard       // Scoreboard base class
-```
+#+END_SRC
 
-### Sequences
-```systemverilog
+** Sequences
+#+BEGIN_SRC systemverilog
 nw_sequence         // Sequence base class
 nw_sequencer        // Sequencer base class
-```
+#+END_SRC
 
-### TLM Ports
-```systemverilog
+** TLM Ports
+#+BEGIN_SRC systemverilog
 nw_analysis_port    // Analysis port
 nw_analysis_imp     // Analysis implementation
 nw_blocking_put_port
 nw_blocking_get_port
 nw_tlm_fifo         // TLM FIFO
-```
+#+END_SRC
 
-### Register Model
-```systemverilog
+** Register Model
+#+BEGIN_SRC systemverilog
 nw_reg              // Register
 nw_reg_field        // Register field
 nw_reg_block        // Register block
 nw_mem              // Memory
 nw_reg_map          // Register map
-```
+#+END_SRC
 
-## Most Common Macros
+* Most Common Macros
 
-### Messaging
-```systemverilog
+** Messaging
+#+BEGIN_SRC systemverilog
 `nw_info(ID, MSG, VERBOSITY)    // VERBOSITY: UVM_NONE, UVM_LOW, UVM_MEDIUM, UVM_HIGH, etc.
 `nw_warning(ID, MSG)
 `nw_error(ID, MSG)
 `nw_fatal(ID, MSG)
-```
+#+END_SRC
 
-### Utility Registration
-```systemverilog
+** Utility Registration
+#+BEGIN_SRC systemverilog
 `nw_component_utils(TYPE)
 `nw_object_utils(TYPE)
 
@@ -66,39 +66,39 @@ nw_reg_map          // Register map
 `nw_object_utils_begin(TYPE)
   // field macros here
 `nw_object_utils_end
-```
+#+END_SRC
 
-### Field Automation
-```systemverilog
+** Field Automation
+#+BEGIN_SRC systemverilog
 `nw_field_int(VAR, FLAG)
 `nw_field_object(VAR, FLAG)
 `nw_field_string(VAR, FLAG)
 `nw_field_enum(TYPE, VAR, FLAG)
 `nw_field_array_int(VAR, FLAG)
 `nw_field_queue_int(VAR, FLAG)
-```
+#+END_SRC
 
 Common flags:
-- `UVM_ALL_ON` - Enable all operations
-- `UVM_DEFAULT` - Default operations
-- `UVM_NOCOMPARE` - Exclude from compare
-- `UVM_NOCOPY` - Exclude from copy
-- `UVM_NOPRINT` - Exclude from print
+- =UVM_ALL_ON= - Enable all operations
+- =UVM_DEFAULT= - Default operations
+- =UVM_NOCOMPARE= - Exclude from compare
+- =UVM_NOCOPY= - Exclude from copy
+- =UVM_NOPRINT= - Exclude from print
 
-### Sequence Macros
-```systemverilog
+** Sequence Macros
+#+BEGIN_SRC systemverilog
 `nw_do(ITEM)
 `nw_do_with(ITEM, CONSTRAINTS)
 `nw_do_on(ITEM, SEQUENCER)
 `nw_create(ITEM)
 `nw_send(ITEM)
 `nw_rand_send(ITEM)
-```
+#+END_SRC
 
-## Quick Start Template
+* Quick Start Template
 
-### Transaction
-```systemverilog
+** Transaction
+#+BEGIN_SRC systemverilog
 class my_transaction extends nw_sequence_item;
   rand bit [31:0] addr;
   rand bit [31:0] data;
@@ -112,10 +112,10 @@ class my_transaction extends nw_sequence_item;
     super.new(name);
   endfunction
 endclass
-```
+#+END_SRC
 
-### Driver
-```systemverilog
+** Driver
+#+BEGIN_SRC systemverilog
 class my_driver extends nw_driver #(my_transaction);
   `nw_component_utils(my_driver)
   
@@ -132,10 +132,10 @@ class my_driver extends nw_driver #(my_transaction);
     end
   endtask
 endclass
-```
+#+END_SRC
 
-### Monitor
-```systemverilog
+** Monitor
+#+BEGIN_SRC systemverilog
 class my_monitor extends nw_monitor;
   `nw_component_utils(my_monitor)
   
@@ -154,10 +154,10 @@ class my_monitor extends nw_monitor;
     // Monitor interface and write to ap
   endtask
 endclass
-```
+#+END_SRC
 
-### Sequence
-```systemverilog
+** Sequence
+#+BEGIN_SRC systemverilog
 class my_sequence extends nw_sequence #(my_transaction);
   `nw_object_utils(my_sequence)
   
@@ -172,10 +172,10 @@ class my_sequence extends nw_sequence #(my_transaction);
     end
   endtask
 endclass
-```
+#+END_SRC
 
-### Agent
-```systemverilog
+** Agent
+#+BEGIN_SRC systemverilog
 class my_agent extends nw_agent;
   `nw_component_utils(my_agent)
   
@@ -203,10 +203,10 @@ class my_agent extends nw_agent;
     end
   endfunction
 endclass
-```
+#+END_SRC
 
-### Environment
-```systemverilog
+** Environment
+#+BEGIN_SRC systemverilog
 class my_env extends nw_env;
   `nw_component_utils(my_env)
   
@@ -221,10 +221,10 @@ class my_env extends nw_env;
     agent = my_agent::type_id::create("agent", this);
   endfunction
 endclass
-```
+#+END_SRC
 
-### Test
-```systemverilog
+** Test
+#+BEGIN_SRC systemverilog
 class my_test extends nw_test;
   `nw_component_utils(my_test)
   
@@ -251,10 +251,10 @@ class my_test extends nw_test;
     phase.drop_objection(this);
   endtask
 endclass
-```
+#+END_SRC
 
-### Top Module
-```systemverilog
+** Top Module
+#+BEGIN_SRC systemverilog
 `include "uvm_macros.svh"
 
 module tb_top;
@@ -265,12 +265,12 @@ module tb_top;
     run_test("my_test");
   end
 endmodule
-```
+#+END_SRC
 
-## Phase Methods
+* Phase Methods
 
 Common phase methods to override:
-```systemverilog
+#+BEGIN_SRC systemverilog
 function void build_phase(nw_phase phase);
 function void connect_phase(nw_phase phase);
 function void end_of_elaboration_phase(nw_phase phase);
@@ -280,24 +280,24 @@ function void extract_phase(nw_phase phase);
 function void check_phase(nw_phase phase);
 function void report_phase(nw_phase phase);
 function void final_phase(nw_phase phase);
-```
+#+END_SRC
 
-## Common UVM Constants
+* Common UVM Constants
 
 Still available via uvm_pkg import:
-- `UVM_NONE` - No verbosity
-- `UVM_LOW` - Low verbosity
-- `UVM_MEDIUM` - Medium verbosity
-- `UVM_HIGH` - High verbosity
-- `UVM_FULL` - Full verbosity
-- `UVM_DEBUG` - Debug verbosity
+- =UVM_NONE= - No verbosity
+- =UVM_LOW= - Low verbosity
+- =UVM_MEDIUM= - Medium verbosity
+- =UVM_HIGH= - High verbosity
+- =UVM_FULL= - Full verbosity
+- =UVM_DEBUG= - Debug verbosity
 
-- `UVM_ACTIVE` - Active agent
-- `UVM_PASSIVE` - Passive agent
+- =UVM_ACTIVE= - Active agent
+- =UVM_PASSIVE= - Passive agent
 
-## Configuration Database
+* Configuration Database
 
-```systemverilog
+#+BEGIN_SRC systemverilog
 // Set configuration
 uvm_config_db#(type)::set(context, inst_name, field_name, value);
 
@@ -305,11 +305,11 @@ uvm_config_db#(type)::set(context, inst_name, field_name, value);
 type value;
 if (!uvm_config_db#(type)::get(context, inst_name, field_name, value))
   `nw_error("CONFIG", "Failed to get configuration")
-```
+#+END_SRC
 
-## Factory
+* Factory
 
-```systemverilog
+#+BEGIN_SRC systemverilog
 // Create objects
 my_type obj = my_type::type_id::create("obj_name", this);
 
@@ -318,11 +318,11 @@ set_type_override_by_type(original_type::get_type(), override_type::get_type());
 
 // Instance override
 set_inst_override_by_type(original_type::get_type(), override_type::get_type(), "path.to.instance");
-```
+#+END_SRC
 
----
+-----
 
 For complete documentation, see:
-- [README.md](README.md) - Project overview
-- [USAGE.md](USAGE.md) - Detailed usage guide
-- [examples/](examples/) - Working examples
+- [[file:README.org][README.org]] - Project overview
+- [[file:USAGE.org][USAGE.org]] - Detailed usage guide
+- [[file:examples/][examples/]] - Working examples

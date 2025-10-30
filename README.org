@@ -1,10 +1,10 @@
-# nw_uvm
+#+TITLE: nw_uvm
 
-## Overview
+* Overview
 
-`nw_uvm` is an intermediate layer between UVM 1.2 and user-defined verification code. It provides typedefs and macro wrappers that replace the "uvm" prefix with "nw" while maintaining the same casing and structure as the original UVM 1.2.
+=nw_uvm= is an intermediate layer between UVM 1.2 and user-defined verification code. It provides typedefs and macro wrappers that replace the "uvm" prefix with "nw" while maintaining the same casing and structure as the original UVM 1.2.
 
-## Purpose
+* Purpose
 
 This package allows users to:
 - Use NW-prefixed types and macros instead of UVM-prefixed ones
@@ -12,18 +12,18 @@ This package allows users to:
 - Keep all original casing and naming conventions (only prefix changes)
 - Follow the same file structure as UVM for easy reference
 
-## Usage
+* Usage
 
-### Import the Package
+** Import the Package
 
-```systemverilog
+#+BEGIN_SRC systemverilog
 import uvm_pkg::*;
 import nw_pkg::*;
-```
+#+END_SRC
 
-### Use NW Types
+** Use NW Types
 
-```systemverilog
+#+BEGIN_SRC systemverilog
 class my_test extends nw_test;
   `nw_component_utils(my_test)
   
@@ -35,34 +35,34 @@ class my_test extends nw_test;
     `nw_info("MY_TEST", "Test is running", UVM_LOW)
   endtask
 endclass
-```
+#+END_SRC
 
-### Use NW Macros
+** Use NW Macros
 
 All UVM macros have NW equivalents with define guards to prevent redefinitions:
 
-- `nw_info(ID, MSG, VERBOSITY)` → calls `uvm_info`
-- `nw_error(ID, MSG)` → calls `uvm_error`
-- `nw_warning(ID, MSG)` → calls `uvm_warning`
-- `nw_fatal(ID, MSG)` → calls `uvm_fatal`
-- `nw_component_utils(TYPE)` → calls `uvm_component_utils`
-- `nw_object_utils(TYPE)` → calls `uvm_object_utils`
+- =nw_info(ID, MSG, VERBOSITY)= → calls =uvm_info=
+- =nw_error(ID, MSG)= → calls =uvm_error=
+- =nw_warning(ID, MSG)= → calls =uvm_warning=
+- =nw_fatal(ID, MSG)= → calls =uvm_fatal=
+- =nw_component_utils(TYPE)= → calls =uvm_component_utils=
+- =nw_object_utils(TYPE)= → calls =uvm_object_utils=
 - And many more...
 
-### Use NW Parameters
+** Use NW Parameters
 
 All UVM constants are available as NW parameters:
 
-- `NW_NONE`, `NW_LOW`, `NW_MEDIUM`, `NW_HIGH`, `NW_FULL`, `NW_DEBUG` (verbosity)
-- `NW_DEFAULT`, `NW_ALL_ON`, `NW_NOCOMPARE`, `NW_NOCOPY`, `NW_NOPRINT` (field flags)
-- `NW_ACTIVE`, `NW_PASSIVE` (agent mode)
+- =NW_NONE=, =NW_LOW=, =NW_MEDIUM=, =NW_HIGH=, =NW_FULL=, =NW_DEBUG= (verbosity)
+- =NW_DEFAULT=, =NW_ALL_ON=, =NW_NOCOMPARE=, =NW_NOCOPY=, =NW_NOPRINT= (field flags)
+- =NW_ACTIVE=, =NW_PASSIVE= (agent mode)
 - And many more...
 
-## File Structure
+* File Structure
 
 The package follows the UVM 1.2 directory structure:
 
-```
+#+BEGIN_EXAMPLE
 nw_uvm/
 ├── src/
 │   ├── nw_pkg.sv           # Main package file
@@ -89,21 +89,21 @@ nw_uvm/
 │   │   └── nw_reg.svh
 │   └── macros/             # Macro wrappers
 │       └── nw_macros.svh
-```
+#+END_EXAMPLE
 
-## Key Features
+* Key Features
 
-1. **Type Safety**: All UVM types are typedef'd with the "nw" prefix
-2. **Macro Wrappers**: All macros wrapped with define guards
-3. **Same Casing**: Original UVM casing preserved (e.g., `uvm_component` → `nw_component`)
-4. **Same Structure**: Files organized following UVM's directory structure
-5. **Full Coverage**: Includes base classes, components, TLM, sequences, and register models
+1. *Type Safety*: All UVM types are typedef'd with the "nw" prefix
+2. *Macro Wrappers*: All macros wrapped with define guards
+3. *Same Casing*: Original UVM casing preserved (e.g., =uvm_component= → =nw_component=)
+4. *Same Structure*: Files organized following UVM's directory structure
+5. *Full Coverage*: Includes base classes, components, TLM, sequences, and register models
 
-## Examples
+* Examples
 
-### Creating a Component
+** Creating a Component
 
-```systemverilog
+#+BEGIN_SRC systemverilog
 class my_driver extends nw_driver #(my_transaction);
   `nw_component_utils(my_driver)
   
@@ -115,11 +115,11 @@ class my_driver extends nw_driver #(my_transaction);
     `nw_info(get_type_name(), "Driver started", UVM_LOW)
   endtask
 endclass
-```
+#+END_SRC
 
-### Using Sequences
+** Using Sequences
 
-```systemverilog
+#+BEGIN_SRC systemverilog
 class my_sequence extends nw_sequence #(my_transaction);
   `nw_object_utils(my_sequence)
   
@@ -128,11 +128,11 @@ class my_sequence extends nw_sequence #(my_transaction);
     `nw_do(tr)
   endtask
 endclass
-```
+#+END_SRC
 
-### Field Automation
+** Field Automation
 
-```systemverilog
+#+BEGIN_SRC systemverilog
 class my_transaction extends nw_sequence_item;
   rand bit [31:0] addr;
   rand bit [31:0] data;
@@ -142,8 +142,8 @@ class my_transaction extends nw_sequence_item;
     `nw_field_int(data, UVM_ALL_ON)
   `nw_object_utils_end
 endclass
-```
+#+END_SRC
 
-## License
+* License
 
 See LICENSE file for details.
