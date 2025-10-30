@@ -35,12 +35,12 @@ module simple_test;
     
     virtual task run_phase(nw_phase phase);
       my_transaction tr;
-      `nw_info(get_type_name(), "Driver started")
+      `nw_info(get_type_name(), "Driver started", UVM_LOW)
       
       forever begin
         seq_item_port.get_next_item(tr);
         `nw_info(get_type_name(), $sformatf("Driving transaction: addr=0x%0h, data=0x%0h, write=%0b", 
-                                              tr.addr, tr.data, tr.write))
+                                              tr.addr, tr.data, tr.write), UVM_MEDIUM)
         // Simulate driving delay
         #10ns;
         seq_item_port.item_done();
@@ -64,7 +64,7 @@ module simple_test;
     endfunction
     
     virtual task run_phase(nw_phase phase);
-      `nw_info(get_type_name(), "Monitor started")
+      `nw_info(get_type_name(), "Monitor started", UVM_LOW)
     endtask
   endclass
   
@@ -80,7 +80,7 @@ module simple_test;
       my_transaction tr;
       
       repeat(5) begin
-        `nw_info(get_type_name(), "Creating transaction")
+        `nw_info(get_type_name(), "Creating transaction", UVM_HIGH)
         `nw_do(tr)
       end
     endtask
@@ -152,14 +152,14 @@ module simple_test;
       my_sequence seq;
       
       phase.raise_objection(this);
-      `nw_info(get_type_name(), "Test started")
+      `nw_info(get_type_name(), "Test started", UVM_LOW)
       
       seq = my_sequence::type_id::create("seq");
       seq.start(env.agent.sequencer);
       
       #100ns;
       
-      `nw_info(get_type_name(), "Test completed")
+      `nw_info(get_type_name(), "Test completed", UVM_LOW)
       phase.drop_objection(this);
     endtask
   endclass

@@ -51,11 +51,11 @@ class my_test extends nw_test;
   
   virtual task run_phase(nw_phase phase);
     phase.raise_objection(this);
-    `nw_info(get_type_name(), "Test started")
+    `nw_info(get_type_name(), "Test started", UVM_LOW)
     
     // Your test code here
     
-    `nw_info(get_type_name(), "Test completed")
+    `nw_info(get_type_name(), "Test completed", UVM_LOW)
     phase.drop_objection(this);
   endtask
 endclass
@@ -119,12 +119,12 @@ endclass
 
 ### Messaging Macros
 
-| UVM Macro | NW Macro |
-|-----------|----------|
-| `` `uvm_info`` | `` `nw_info`` |
-| `` `uvm_warning`` | `` `nw_warning`` |
-| `` `uvm_error`` | `` `nw_error`` |
-| `` `uvm_fatal`` | `` `nw_fatal`` |
+| UVM Macro | NW Macro | Notes |
+|-----------|----------|-------|
+| `` `uvm_info`` | `` `nw_info(ID, MSG, VERBOSITY)`` | Verbosity parameter required |
+| `` `uvm_warning`` | `` `nw_warning(ID, MSG)`` | |
+| `` `uvm_error`` | `` `nw_error(ID, MSG)`` | |
+| `` `uvm_fatal`` | `` `nw_fatal(ID, MSG)`` | |
 
 ### Utility Macros
 
@@ -277,7 +277,7 @@ class my_scoreboard extends nw_scoreboard;
   endfunction
   
   virtual function void write(my_transaction tr);
-    `nw_info(get_type_name(), $sformatf("Received transaction: %s", tr.sprint()))
+    `nw_info(get_type_name(), $sformatf("Received transaction: %s", tr.sprint()), UVM_HIGH)
     // Add checking logic here
   endfunction
 endclass

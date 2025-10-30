@@ -11,8 +11,8 @@
 //----------------------------------------------------------------------
 
 `ifndef nw_info
-  `define nw_info(ID, MSG) \
-    `uvm_info(ID, MSG, UVM_NONE)
+  `define nw_info(ID, MSG, VERBOSITY) \
+    `uvm_info(ID, MSG, VERBOSITY)
 `endif
 
 `ifndef nw_warning
@@ -31,8 +31,8 @@
 `endif
 
 `ifndef nw_info_context
-  `define nw_info_context(ID, MSG, CNTXT) \
-    `uvm_info_context(ID, MSG, UVM_NONE, CNTXT)
+  `define nw_info_context(ID, MSG, VERBOSITY, CNTXT) \
+    `uvm_info_context(ID, MSG, VERBOSITY, CNTXT)
 `endif
 
 `ifndef nw_warning_context
@@ -74,6 +74,16 @@
     `uvm_object_utils_end
 `endif
 
+`ifndef nw_object_param_utils_begin
+  `define nw_object_param_utils_begin(T) \
+    `uvm_object_param_utils_begin(T)
+`endif
+
+`ifndef nw_object_param_utils_end
+  `define nw_object_param_utils_end \
+    `uvm_object_param_utils_end
+`endif
+
 //----------------------------------------------------------------------
 // Component Utility Macros
 //----------------------------------------------------------------------
@@ -96,6 +106,16 @@
 `ifndef nw_component_utils_end
   `define nw_component_utils_end \
     `uvm_component_utils_end
+`endif
+
+`ifndef nw_component_param_utils_begin
+  `define nw_component_param_utils_begin(T) \
+    `uvm_component_param_utils_begin(T)
+`endif
+
+`ifndef nw_component_param_utils_end
+  `define nw_component_param_utils_end \
+    `uvm_component_param_utils_end
 `endif
 
 //----------------------------------------------------------------------

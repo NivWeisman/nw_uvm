@@ -32,7 +32,7 @@ class my_test extends nw_test;
   endfunction
   
   virtual task run_phase(nw_phase phase);
-    `nw_info("MY_TEST", "Test is running")
+    `nw_info("MY_TEST", "Test is running", UVM_LOW)
   endtask
 endclass
 ```
@@ -41,12 +41,21 @@ endclass
 
 All UVM macros have NW equivalents with define guards to prevent redefinitions:
 
-- `nw_info` → calls `uvm_info`
-- `nw_error` → calls `uvm_error`
-- `nw_warning` → calls `uvm_warning`
-- `nw_fatal` → calls `uvm_fatal`
-- `nw_component_utils` → calls `uvm_component_utils`
-- `nw_object_utils` → calls `uvm_object_utils`
+- `nw_info(ID, MSG, VERBOSITY)` → calls `uvm_info`
+- `nw_error(ID, MSG)` → calls `uvm_error`
+- `nw_warning(ID, MSG)` → calls `uvm_warning`
+- `nw_fatal(ID, MSG)` → calls `uvm_fatal`
+- `nw_component_utils(TYPE)` → calls `uvm_component_utils`
+- `nw_object_utils(TYPE)` → calls `uvm_object_utils`
+- And many more...
+
+### Use NW Constants
+
+All UVM constants have NW equivalents:
+
+- `NW_NONE`, `NW_LOW`, `NW_MEDIUM`, `NW_HIGH`, `NW_FULL`, `NW_DEBUG` (verbosity)
+- `NW_DEFAULT`, `NW_ALL_ON`, `NW_NOCOMPARE`, `NW_NOCOPY`, `NW_NOPRINT` (field flags)
+- `NW_ACTIVE`, `NW_PASSIVE` (agent mode)
 - And many more...
 
 ## File Structure
@@ -68,7 +77,8 @@ nw_uvm/
 │   │   ├── nw_comparer.svh
 │   │   ├── nw_packer.svh
 │   │   ├── nw_recorder.svh
-│   │   └── nw_misc.svh
+│   │   ├── nw_misc.svh
+│   │   └── nw_defines.svh
 │   ├── comps/              # Component typedefs
 │   │   └── nw_comps.svh
 │   ├── tlm1/               # TLM typedefs
@@ -102,7 +112,7 @@ class my_driver extends nw_driver #(my_transaction);
   endfunction
   
   virtual task run_phase(nw_phase phase);
-    `nw_info(get_type_name(), "Driver started")
+    `nw_info(get_type_name(), "Driver started", UVM_LOW)
   endtask
 endclass
 ```

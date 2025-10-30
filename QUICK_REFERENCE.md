@@ -48,7 +48,7 @@ nw_reg_map          // Register map
 
 ### Messaging
 ```systemverilog
-`nw_info(ID, MSG)
+`nw_info(ID, MSG, VERBOSITY)    // VERBOSITY: UVM_NONE, UVM_LOW, UVM_MEDIUM, UVM_HIGH, etc.
 `nw_warning(ID, MSG)
 `nw_error(ID, MSG)
 `nw_fatal(ID, MSG)
@@ -242,12 +242,12 @@ class my_test extends nw_test;
   virtual task run_phase(nw_phase phase);
     my_sequence seq;
     phase.raise_objection(this);
-    `nw_info(get_type_name(), "Test started")
+    `nw_info(get_type_name(), "Test started", UVM_LOW)
     
     seq = my_sequence::type_id::create("seq");
     seq.start(env.agent.sequencer);
     
-    `nw_info(get_type_name(), "Test completed")
+    `nw_info(get_type_name(), "Test completed", UVM_LOW)
     phase.drop_objection(this);
   endtask
 endclass

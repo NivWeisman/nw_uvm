@@ -18,6 +18,9 @@ package nw_pkg;
   // Include macro definitions
   `include "macros/nw_macros.svh"
   
+  // Include constant definitions
+  `include "base/nw_defines.svh"
+  
   // Include base class typedefs
   `include "base/nw_object.svh"
   `include "base/nw_transaction.svh"
