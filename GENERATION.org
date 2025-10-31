@@ -1,0 +1,414 @@
+#+TITLE: NW UVM Generation Process
+#+AUTHOR: Auto-generated
+#+DATE: 2025
+
+* Overview
+
+This document describes how the nw_uvm wrapper files were generated from UVM 1.2 source code. This information is useful for:
+- Understanding the implementation
+- Regenerating files for different UVM versions
+- Adding new wrappers
+- Maintaining the repository
+
+* Source Extraction
+
+The first step is extracting definitions from UVM 1.2 source code into text files.
+
+** Classes Extraction
+
+Extract all class definitions:
+#+BEGIN_SRC bash
+rg "^class.*;" ~/Documents/SystemVerilog/uvm-1.2/src -IN > classes.txt
+#+END_SRC
+
+This finds lines starting with "class" and ending with ";" to capture class declarations.
+
+Result: ~classes.txt~ with 173 class definitions
+
+** Macros Extraction
+
+Extract all macro definitions:
+#+BEGIN_SRC bash
+rg "^\`define" ~/Documents/SystemVerilog/uvm-1.2/src -IN | sort -u > macros.txt
+#+END_SRC
+
+This finds all lines starting with ~`define~ and removes duplicates.
+
+Result: ~macros.txt~ with 430+ macro definitions (some duplicates preserved for compatibility)
+
+** Constants Extraction
+
+Extract all parameter definitions:
+#+BEGIN_SRC bash
+rg "^parameter" ~/Documents/SystemVerilog/uvm-1.2/src -IN | sort -u > constants.txt
+#+END_SRC
+
+This finds all lines starting with "parameter".
+
+Result: ~constants.txt~ with 45+ constant definitions
+
+** Types Extraction
+
+Extract typedef definitions (multi-line aware):
+#+BEGIN_SRC bash
+rg "^typedef [^cs].*?uvm.*?;" ~/Documents/SystemVerilog/uvm-1.2/src -INUi --multiline-dotall > types.txt
+rg "^typedef [s].*?\} uvm.*?;" ~/Documents/SystemVerilog/uvm-1.2/src -INUi --multiline-dotall >> types.txt
+#+END_SRC
+
+This handles both simple and complex typedefs including enums and structs.
+
+Result: ~types.txt~ with 186+ type definitions
+
+* Generation Script
+
+A Python script processes the text files and generates SystemVerilog wrappers.
+
+** Script Location
+
+The generation script used: ~/tmp/generate_nw_wrappers.py~
+
+** Key Functions
+
+*** read_file(filename)
+Reads a text file and returns lines as list.
+
+*** convert_uvm_to_nw(text)
+Converts all uvm/UVM prefixes to nw/NW while preserving case:
+- ~uvm_~ → ~nw_~
+- ~UVM_~ → ~NW_~
+- ~`uvm_~ → ~`nw_~
+- ~m_uvm_~ → ~m_nw_~
+
+Uses regex with word boundaries to avoid partial replacements.
+
+*** categorize_class(class_line)
+Determines which category a class belongs to:
+- ~reg~ - Register model classes (~uvm_reg~, ~uvm_mem~, ~uvm_vreg~)
+- ~seq~ - Sequence classes (~uvm_sequencer~, ~uvm_sequence~, ~uvm_driver~)
+- ~tlm~ - TLM classes (~uvm_tlm_~)
+- ~comps~ - Component classes (~uvm_component~, ~uvm_test~, ~uvm_env~, etc.)
+- ~base~ - Everything else (default)
+
+*** generate_typedef_for_class(class_line)
+Creates typedef statement from class declaration:
+#+BEGIN_SRC systemverilog
+// Input: class uvm_component extends uvm_object;
+// Output: typedef uvm_component nw_component;
+#+END_SRC
+
+Handles parameterized classes.
+
+** Processing Flow
+
+1. Read all input text files
+2. For each class:
+   - Parse the class declaration
+   - Categorize by function
+   - Generate typedef statement
+   - Add to appropriate category
+3. For each type:
+   - Parse typedef statement
+   - Convert uvm to nw prefixes
+   - Add to types list
+4. For each macro:
+   - Extract macro name and parameters
+   - Generate wrapper with ~`ifndef~ guard
+   - Add to macros list
+5. For each constant:
+   - Parse parameter statement
+   - Convert uvm to nw prefixes
+   - Add to constants list
+6. Write output files
+
+** Output Files
+
+Generated in ~src/~ directory:
+- ~base/nw_base_classes.svh~
+- ~comps/nw_comps_classes.svh~
+- ~reg/nw_reg_classes.svh~
+- ~seq/nw_seq_classes.svh~
+- ~tlm/nw_tlm_classes.svh~
+- ~base/nw_types.svh~
+- ~macros/nw_macros.svh~
+- ~base/nw_constants.svh~
+- ~nw_pkg.sv~ (manually created)
+
+* File Formats
+
+** Class Typedef Files
+
+Format:
+#+BEGIN_SRC systemverilog
+// nw_<category>_classes.svh
+// Typedef wrappers for UVM <category> classes
+// Automatically generated - DO NOT EDIT
+
+typedef uvm_class_name nw_class_name;
+typedef uvm_other_class nw_other_class;
+// ...
+#+END_SRC
+
+** Types File
+
+Format:
+#+BEGIN_SRC systemverilog
+// nw_types.svh
+// Typedef wrappers for UVM types
+// Automatically generated - DO NOT EDIT
+
+typedef nw_port_component_base nw_port_list[string];
+typedef enum {
+  NW_CONSTANT1,
+  NW_CONSTANT2
+} nw_enum_type;
+// ...
+#+END_SRC
+
+** Macros File
+
+Format:
+#+BEGIN_SRC systemverilog
+// nw_macros.svh
+// Macro wrappers for UVM macros
+// Automatically generated - DO NOT EDIT
+
+`ifndef nw_macro_name
+`define nw_macro_name(ARGS) `uvm_macro_name(ARGS)
+`endif
+
+`ifndef nw_simple_macro
+`define nw_simple_macro `uvm_simple_macro
+`endif
+// ...
+#+END_SRC
+
+** Constants File
+
+Format:
+#+BEGIN_SRC systemverilog
+// nw_constants.svh
+// Parameter/constant wrappers for UVM constants
+// Automatically generated - DO NOT EDIT
+
+parameter NW_CONSTANT = value;
+parameter NW_OTHER = 'hvalue;
+// ...
+#+END_SRC
+
+* Package File
+
+The main package file (~nw_pkg.sv~) was created manually with this structure:
+
+#+BEGIN_SRC systemverilog
+`ifndef NW_PKG_SV
+`define NW_PKG_SV
+
+package nw_pkg;
+  import uvm_pkg::*;
+  
+  `include "macros/nw_macros.svh"
+  `include "base/nw_constants.svh"
+  `include "base/nw_types.svh"
+  `include "base/nw_base_classes.svh"
+  `include "comps/nw_comps_classes.svh"
+  `include "tlm/nw_tlm_classes.svh"
+  `include "seq/nw_seq_classes.svh"
+  `include "reg/nw_reg_classes.svh"
+endpackage
+
+`endif
+#+END_SRC
+
+Order is important:
+1. Macros first (used everywhere)
+2. Constants second (referenced in types)
+3. Types third (used in class typedefs)
+4. Classes last (organized by category)
+
+* Regeneration
+
+To regenerate for a new UVM version:
+
+** Step 1: Update Source Files
+#+BEGIN_SRC bash
+cd /path/to/nw_uvm
+
+# Update UVM path in commands below
+UVM_SRC=~/Documents/SystemVerilog/uvm-1.x/src
+
+# Extract classes
+rg "^class.*;" $UVM_SRC -IN > classes.txt
+
+# Extract macros
+rg "^\`define" $UVM_SRC -IN | sort -u > macros.txt
+
+# Extract constants
+rg "^parameter" $UVM_SRC -IN | sort -u > constants.txt
+
+# Extract types
+rg "^typedef [^cs].*?uvm.*?;" $UVM_SRC -INUi --multiline-dotall > types.txt
+rg "^typedef [s].*?\} uvm.*?;" $UVM_SRC -INUi --multiline-dotall >> types.txt
+#+END_SRC
+
+** Step 2: Run Generation Script
+#+BEGIN_SRC bash
+python3 /path/to/generate_nw_wrappers.py
+#+END_SRC
+
+** Step 3: Verify Output
+Check that files were generated:
+#+BEGIN_SRC bash
+ls -la src/base/
+ls -la src/comps/
+ls -la src/macros/
+ls -la src/reg/
+ls -la src/seq/
+ls -la src/tlm/
+#+END_SRC
+
+** Step 4: Manual Review
+Review generated files for:
+- Syntax correctness
+- Complete conversion of prefixes
+- Proper categorization
+- Missing or extra items
+
+** Step 5: Test Compilation
+#+BEGIN_SRC bash
+# Compile with your simulator
+vlog +incdir+./src ./src/nw_pkg.sv
+
+# Check for errors
+#+END_SRC
+
+* Special Cases
+
+** Parameterized Classes
+
+Handled automatically:
+#+BEGIN_SRC systemverilog
+// Input
+class uvm_config_db#(type T=int) extends uvm_resource_db#(T);
+
+// Output
+typedef uvm_config_db nw_config_db;
+#+END_SRC
+
+The typedef works because SystemVerilog allows typedef of parameterized classes.
+
+** Multi-line Definitions
+
+Types extraction uses ~--multiline-dotall~ flag to handle:
+- Enum definitions spanning multiple lines
+- Struct definitions
+- Complex typedefs
+
+** Macro Parameters
+
+Preserved in wrapper:
+#+BEGIN_SRC systemverilog
+// Input
+`define uvm_do_with(SEQ_OR_ITEM, CONSTRAINTS) ...
+
+// Output
+`ifndef nw_do_with
+`define nw_do_with(SEQ_OR_ITEM, CONSTRAINTS) `uvm_do_with(SEQ_OR_ITEM, CONSTRAINTS)
+`endif
+#+END_SRC
+
+** Duplicate Macros
+
+Some macros appear multiple times in UVM (with/without bodies).
+These are preserved as UVM defines them in different contexts.
+The ~`ifndef~ guards prevent actual redefinition errors.
+
+* Maintenance
+
+** Adding New Items
+
+To manually add items:
+
+1. Add to appropriate text file (classes.txt, etc.)
+2. Regenerate using script
+3. Or manually add to appropriate .svh file
+
+** Modifying Generation
+
+To change generation behavior:
+1. Edit Python script
+2. Regenerate all files
+3. Review changes with git diff
+
+** Version Control
+
+Track these files in git:
+- All .txt source files
+- All generated .svh files
+- Main package file
+- Documentation files
+
+Generation scripts can be temporary or tracked separately.
+
+* Validation
+
+** Syntax Check
+Compile with simulator to verify syntax.
+
+** Completeness Check
+#+BEGIN_SRC bash
+# Count items in source vs generated
+wc -l classes.txt
+grep -c "^typedef" src/*/nw_*_classes.svh | awk '{s+=$1} END {print s}'
+#+END_SRC
+
+** Naming Check
+Verify all uvm prefixes converted:
+#+BEGIN_SRC bash
+# Should return no matches (except in comments)
+grep -r "uvm_" src/ --include="*.svh" | grep -v "^//"
+#+END_SRC
+
+* Troubleshooting
+
+** Missing Classes
+- Check if extraction command found all files
+- Verify regex patterns
+- Look for non-standard formatting
+
+** Compilation Errors
+- Verify UVM is compiled first
+- Check include paths
+- Review typedef syntax
+
+** Incorrect Categorization
+- Update ~categorize_class()~ function
+- Regenerate files
+
+** Prefix Not Converted
+- Update ~convert_uvm_to_nw()~ regex patterns
+- Handle special cases explicitly
+- Regenerate files
+
+* Best Practices
+
+1. **Always regenerate completely** - Don't manually edit generated files
+2. **Test after regeneration** - Compile and verify
+3. **Document changes** - Update version info
+4. **Backup source files** - Keep original text files
+5. **Version control** - Commit all changes together
+6. **Review diffs** - Check what changed between versions
+
+* Tools Used
+
+- ~ripgrep (rg)~ - Fast text extraction with regex
+- ~Python 3~ - Generation script
+- ~SystemVerilog compiler~ - Validation
+- ~git~ - Version control
+- ~Emacs org-mode~ - Documentation
+
+* References
+
+- UVM 1.2 LRM
+- SystemVerilog LRM (IEEE 1800-2012)
+- Ripgrep documentation
+- Python regex documentation
