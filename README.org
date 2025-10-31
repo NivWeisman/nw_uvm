@@ -1,0 +1,160 @@
+#+TITLE: NW UVM - Intermediate Layer for UVM 1.2
+#+AUTHOR: Auto-generated
+#+DATE: 2025
+
+* Overview
+
+The ~nw_uvm~ repository provides an intermediate layer between UVM 1.2 and user-defined verification components. It wraps UVM classes, types, macros, and constants with an "nw" prefix instead of "uvm", allowing users to work with a consistent naming convention while maintaining full compatibility with UVM 1.2.
+
+* Purpose
+
+This layer serves several purposes:
+1. Provides a consistent naming prefix (~nw~ instead of ~uvm~)
+2. Maintains identical functionality to UVM 1.2
+3. Allows for future customization without modifying UVM directly
+4. Keeps the same casing as original UVM names
+5. Follows UVM's file and folder organization
+
+* Directory Structure
+
+#+BEGIN_SRC
+nw_uvm/
+├── src/
+│   ├── nw_pkg.sv              # Main package file
+│   ├── base/                  # Base infrastructure
+│   │   ├── nw_base_classes.svh
+│   │   ├── nw_types.svh
+│   │   └── nw_constants.svh
+│   ├── comps/                 # Components
+│   │   └── nw_comps_classes.svh
+│   ├── macros/                # Macro definitions
+│   │   └── nw_macros.svh
+│   ├── reg/                   # Register layer
+│   │   └── nw_reg_classes.svh
+│   ├── seq/                   # Sequences and sequencers
+│   │   └── nw_seq_classes.svh
+│   └── tlm/                   # TLM interfaces
+│       └── nw_tlm_classes.svh
+├── classes.txt                # Source: UVM class definitions
+├── types.txt                  # Source: UVM type definitions
+├── macros.txt                 # Source: UVM macro definitions
+└── constants.txt              # Source: UVM constants
+#+END_SRC
+
+* Usage
+
+** Compilation
+
+To use ~nw_uvm~ in your verification environment:
+
+1. First, compile UVM 1.2:
+   #+BEGIN_SRC bash
+   # Example with QuestaSim
+   vlog -work work +incdir+$UVM_HOME/src $UVM_HOME/src/uvm_pkg.sv
+   #+END_SRC
+
+2. Then compile the nw_uvm package:
+   #+BEGIN_SRC bash
+   vlog -work work +incdir+./src ./src/nw_pkg.sv
+   #+END_SRC
+
+** In Your Code
+
+Instead of importing ~uvm_pkg~, import ~nw_pkg~:
+
+#+BEGIN_SRC systemverilog
+// Traditional UVM approach
+import uvm_pkg::*;
+class my_test extends uvm_test;
+  `uvm_component_utils(my_test)
+  // ...
+endclass
+
+// Using nw_uvm
+import nw_pkg::*;
+class my_test extends nw_test;
+  `nw_component_utils(my_test)
+  // ...
+endclass
+#+END_SRC
+
+* Components
+
+** Classes
+
+All UVM classes are wrapped as typedefs with the ~nw~ prefix:
+- ~uvm_component~ → ~nw_component~
+- ~uvm_test~ → ~nw_test~
+- ~uvm_env~ → ~nw_env~
+- ~uvm_agent~ → ~nw_agent~
+- ~uvm_sequence~ → ~nw_sequence~
+- ~uvm_driver~ → ~nw_driver~
+- And many more...
+
+** Types
+
+All UVM typedefs maintain their structure with ~nw~ prefixes:
+- ~uvm_config_db~ → ~nw_config_db~
+- ~uvm_tlm_command_e~ → ~nw_tlm_command_e~
+- ~uvm_severity~ → ~nw_severity~
+- Etc.
+
+** Macros
+
+All UVM macros are wrapped with ~nw~ equivalents:
+- ~`uvm_component_utils~ → ~`nw_component_utils~
+- ~`uvm_object_utils~ → ~`nw_object_utils~
+- ~`uvm_info~ → ~`nw_info~
+- ~`uvm_error~ → ~`nw_error~
+- And all other UVM macros
+
+Each macro wrapper includes ifndef guards to prevent redefinition:
+#+BEGIN_SRC systemverilog
+`ifndef nw_info
+`define nw_info(ID, MSG, VERBOSITY) `uvm_info(ID, MSG, VERBOSITY)
+`endif
+#+END_SRC
+
+** Constants
+
+All UVM parameters are redefined with ~nw~ prefixes:
+- ~UVM_NONE~ → ~NW_NONE~
+- ~UVM_LOW~ → ~NW_LOW~
+- ~UVM_HIGH~ → ~NW_HIGH~
+- Etc.
+
+* Generation
+
+The wrapper files are automatically generated from the text files in the repository root:
+- ~classes.txt~ - Contains UVM class declarations
+- ~types.txt~ - Contains UVM typedef declarations
+- ~macros.txt~ - Contains UVM macro definitions
+- ~constants.txt~ - Contains UVM parameter definitions
+
+These text files were extracted from UVM 1.2 source code using the commands in the Makefile.
+
+* Compatibility
+
+This package is designed to be fully compatible with UVM 1.2. All wrapped elements directly reference their UVM counterparts, so functionality remains identical.
+
+** Requirements
+- SystemVerilog compiler supporting UVM 1.2
+- UVM 1.2 library properly installed and compiled
+
+* License
+
+See LICENSE file for details.
+
+* Contributing
+
+This is an auto-generated wrapper. To modify:
+1. Update the source text files (classes.txt, types.txt, etc.)
+2. Regenerate the wrapper files using the generation scripts
+3. Test compilation with UVM 1.2
+
+* Notes
+
+- All generated files include "DO NOT EDIT" warnings
+- Macro wrappers include ifndef guards to prevent redefinition
+- File organization mirrors UVM 1.2 structure
+- Casing is preserved from original UVM names
