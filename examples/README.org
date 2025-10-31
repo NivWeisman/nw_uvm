@@ -1,0 +1,139 @@
+#+TITLE: NW UVM Examples
+#+AUTHOR: Auto-generated
+#+DATE: 2025
+
+* Overview
+
+This directory contains examples demonstrating how to use the nw_uvm wrapper layer instead of direct UVM usage.
+
+* Examples
+
+** basic_test.sv
+
+A complete example showing:
+- Transaction definition with ~nw_sequence_item~
+- Driver using ~nw_driver~
+- Monitor using ~nw_monitor~
+- Agent using ~nw_agent~
+- Sequence using ~nw_sequence~
+- Environment using ~nw_env~
+- Test using ~nw_test~
+- All nw-prefixed macros (~`nw_component_utils~, ~`nw_info~, etc.)
+
+* Compiling and Running
+
+** Prerequisites
+
+1. UVM 1.2 must be compiled and available
+2. A SystemVerilog simulator (e.g., QuestaSim, VCS, Xcelium)
+
+** Compilation Steps
+
+*** With QuestaSim/ModelSim
+
+#+BEGIN_SRC bash
+# Create a work library
+vlib work
+
+# Compile UVM (if not already compiled)
+vlog -work work +incdir+$UVM_HOME/src $UVM_HOME/src/uvm_pkg.sv
+
+# Compile nw_uvm package
+vlog -work work +incdir+../src ../src/nw_pkg.sv
+
+# Compile the example
+vlog -work work basic_test.sv
+
+# Run simulation
+vsim -c work.top -do "run -all; quit -f"
+#+END_SRC
+
+*** With VCS
+
+#+BEGIN_SRC bash
+# Compile UVM (if not already compiled)
+vcs -sverilog +incdir+$VCS_HOME/etc/uvm-1.2/src $VCS_HOME/etc/uvm-1.2/src/uvm_pkg.sv
+
+# Compile nw_uvm and example
+vcs -sverilog +incdir+../src ../src/nw_pkg.sv basic_test.sv -R
+#+END_SRC
+
+*** With Xcelium
+
+#+BEGIN_SRC bash
+# Compile all files
+xrun -uvm +incdir+../src ../src/nw_pkg.sv basic_test.sv
+#+END_SRC
+
+* Key Differences from UVM
+
+When using nw_uvm instead of UVM directly:
+
+** Imports
+#+BEGIN_SRC systemverilog
+// UVM
+import uvm_pkg::*;
+
+// NW UVM
+import nw_pkg::*;
+#+END_SRC
+
+** Class Inheritance
+#+BEGIN_SRC systemverilog
+// UVM
+class my_test extends uvm_test;
+
+// NW UVM
+class my_test extends nw_test;
+#+END_SRC
+
+** Macros
+#+BEGIN_SRC systemverilog
+// UVM
+`uvm_component_utils(my_test)
+`uvm_info("TEST", "Message", UVM_LOW)
+
+// NW UVM
+`nw_component_utils(my_test)
+`nw_info("TEST", "Message", NW_LOW)
+#+END_SRC
+
+** Constants
+#+BEGIN_SRC systemverilog
+// UVM
+UVM_LOW
+UVM_MEDIUM
+UVM_HIGH
+
+// NW UVM
+NW_LOW
+NW_MEDIUM
+NW_HIGH
+#+END_SRC
+
+* Converting Existing UVM Code
+
+To convert existing UVM testbenches to use nw_uvm:
+
+1. Replace ~import uvm_pkg::*;~ with ~import nw_pkg::*;~
+2. Replace all ~uvm_~ class names with ~nw_~ (e.g., ~uvm_test~ → ~nw_test~)
+3. Replace all ~`uvm_~ macros with ~`nw_~ (e.g., ~`uvm_info~ → ~`nw_info~)
+4. Replace all ~UVM_~ constants with ~NW_~ (e.g., ~UVM_LOW~ → ~NW_LOW~)
+
+This can be done with simple text replacement, as the APIs are identical.
+
+* Benefits
+
+Using nw_uvm provides:
+- Consistent naming with "nw" prefix
+- Same functionality as UVM 1.2
+- Easy migration path
+- Potential for future customization
+- Clear separation from base UVM
+
+* Notes
+
+- All nw types are typedefs of UVM types
+- All nw macros call UVM macros
+- Functionality is 100% identical to UVM 1.2
+- No performance overhead
