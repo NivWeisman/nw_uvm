@@ -1,0 +1,42 @@
+# Simulation artifacts
+*.log
+*.wlf
+*.vstf
+work/
+transcript
+vsim.wlf
+*.vcd
+*.fsdb
+
+# Questasim/Modelsim
+modelsim.ini
+
+# VCS
+csrc/
+simv
+simv.daidir/
+ucli.key
+*.vpd
+
+# Vivado/Xilinx
+*.jou
+*.str
+vivado*.log
+.Xil/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Temporary files
+*~
+*.swp
+*.swo
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace

@@ -1,0 +1,41 @@
+// nw_reg_classes.svh
+// Typedef wrappers for UVM reg classes
+// Automatically generated - DO NOT EDIT
+
+typedef uvm_reg_fifo nw_reg_fifo;
+typedef uvm_reg_item nw_reg_item;
+typedef uvm_reg_map_info nw_reg_map_info;
+typedef uvm_reg_map nw_reg_map;
+typedef uvm_reg_backdoor nw_reg_backdoor;
+typedef uvm_mem_mam nw_mem_mam;
+typedef uvm_mem_region nw_mem_region;
+typedef uvm_mem_mam_policy nw_mem_mam_policy;
+typedef uvm_mem_mam_cfg nw_mem_mam_cfg;
+typedef uvm_reg_sequence nw_reg_sequence;
+typedef uvm_vreg_field nw_vreg_field;
+typedef uvm_vreg_field_cbs nw_vreg_field_cbs;
+typedef uvm_reg_tlm_adapter nw_reg_tlm_adapter;
+typedef uvm_mem nw_mem;
+typedef uvm_reg_read_only_cbs nw_reg_read_only_cbs;
+typedef uvm_reg_write_only_cbs nw_reg_write_only_cbs;
+typedef uvm_reg_field nw_reg_field;
+typedef uvm_vreg nw_vreg;
+typedef uvm_vreg_cbs nw_vreg_cbs;
+typedef uvm_reg_indirect_data nw_reg_indirect_data;
+typedef uvm_reg_indirect_ftdr_seq nw_reg_indirect_ftdr_seq;
+typedef uvm_reg_predictor nw_reg_predictor;
+typedef uvm_mem_single_walk_seq nw_mem_single_walk_seq;
+typedef uvm_mem_walk_seq nw_mem_walk_seq;
+typedef uvm_reg_single_bit_bash_seq nw_reg_single_bit_bash_seq;
+typedef uvm_reg_bit_bash_seq nw_reg_bit_bash_seq;
+typedef uvm_reg_mem_built_in_seq nw_reg_mem_built_in_seq;
+typedef uvm_reg_single_access_seq nw_reg_single_access_seq;
+typedef uvm_reg_access_seq nw_reg_access_seq;
+typedef uvm_reg_mem_access_seq nw_reg_mem_access_seq;
+typedef uvm_reg_shared_access_seq nw_reg_shared_access_seq;
+typedef uvm_mem_shared_access_seq nw_mem_shared_access_seq;
+typedef uvm_reg_mem_shared_access_seq nw_reg_mem_shared_access_seq;
+typedef uvm_reg_hw_reset_seq nw_reg_hw_reset_seq;
+typedef uvm_mem_single_access_seq nw_mem_single_access_seq;
+typedef uvm_mem_access_seq nw_mem_access_seq;
+typedef uvm_reg_mem_hdl_paths_seq nw_reg_mem_hdl_paths_seq;

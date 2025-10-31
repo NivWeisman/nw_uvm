@@ -1,0 +1,16 @@
+// nw_seq_classes.svh
+// Typedef wrappers for UVM seq classes
+// Automatically generated - DO NOT EDIT
+
+typedef uvm_sequence_base nw_sequence_base;
+typedef uvm_sequence_item nw_sequence_item;
+typedef uvm_sequence_process_wrapper nw_sequence_process_wrapper;
+typedef uvm_sequencer_base nw_sequencer_base;
+typedef uvm_sequence_request nw_sequence_request;
+typedef uvm_sequencer_analysis_fifo nw_sequencer_analysis_fifo;
+typedef uvm_sequence_library nw_sequence_library;
+typedef uvm_sequence_library_cfg nw_sequence_library_cfg;
+typedef uvm_tlm_generic_payload nw_tlm_generic_payload;
+typedef uvm_random_sequence nw_random_sequence;
+typedef uvm_exhaustive_sequence nw_exhaustive_sequence;
+typedef uvm_simple_sequence nw_simple_sequence;

@@ -1,0 +1,338 @@
+#+TITLE: NW UVM API Reference
+#+AUTHOR: Auto-generated
+#+DATE: 2025
+
+* Introduction
+
+This document provides a reference for the NW UVM API, which is a complete wrapper of UVM 1.2 with "nw" prefixes instead of "uvm".
+
+* Class Hierarchy
+
+All UVM classes are available with ~nw~ prefix as typedefs. The class hierarchy remains the same as UVM 1.2.
+
+** Base Classes
+
+*** nw_object
+Base class for all UVM objects. Typedef of ~uvm_object~.
+
+*** nw_component  
+Base class for all UVM components. Typedef of ~uvm_component~.
+
+*** nw_transaction
+Base class for transaction objects. Typedef of ~uvm_transaction~.
+
+*** nw_sequence_item
+Base class for sequence items. Typedef of ~uvm_sequence_item~.
+
+** Component Classes
+
+*** nw_test
+Base class for test components. Typedef of ~uvm_test~.
+
+*** nw_env
+Base class for environment components. Typedef of ~uvm_env~.
+
+*** nw_agent
+Base class for agent components. Typedef of ~uvm_agent~.
+
+*** nw_monitor
+Base class for monitor components. Typedef of ~uvm_monitor~.
+
+*** nw_driver
+Base class for driver components. Typedef of ~uvm_driver~.
+
+*** nw_scoreboard
+Base class for scoreboard components. Typedef of ~uvm_scoreboard~.
+
+** Sequence Classes
+
+*** nw_sequence
+Base class for sequences. Typedef of ~uvm_sequence~.
+
+*** nw_sequencer
+Base class for sequencers. Typedef of ~uvm_sequencer~.
+
+** Register Classes
+
+*** nw_reg
+Base class for registers. Typedef of ~uvm_reg~.
+
+*** nw_reg_field
+Register field class. Typedef of ~uvm_reg_field~.
+
+*** nw_mem
+Memory model class. Typedef of ~uvm_mem~.
+
+*** nw_reg_block
+Register block class. Typedef of ~uvm_reg_block~.
+
+*** nw_reg_map
+Register map class. Typedef of ~uvm_reg_map~.
+
+** TLM Classes
+
+*** nw_tlm_fifo
+TLM FIFO implementation. Typedef of ~uvm_tlm_fifo~.
+
+*** nw_tlm_analysis_fifo
+TLM analysis FIFO. Typedef of ~uvm_tlm_analysis_fifo~.
+
+*** nw_tlm_generic_payload
+Generic payload for TLM-2.0. Typedef of ~uvm_tlm_generic_payload~.
+
+* Utility Macros
+
+All UVM utility macros are wrapped with ~nw~ prefix.
+
+** Registration Macros
+
+*** `nw_object_utils(TYPE)
+Register an object type. Calls ~`uvm_object_utils~.
+
+*** `nw_component_utils(TYPE)
+Register a component type. Calls ~`uvm_component_utils~.
+
+*** `nw_object_param_utils(TYPE)
+Register a parameterized object. Calls ~`uvm_object_param_utils~.
+
+*** `nw_component_param_utils(TYPE)
+Register a parameterized component. Calls ~`uvm_component_param_utils~.
+
+** Field Macros
+
+*** `nw_field_int(ARG, FLAG)
+Register an integer field. Calls ~`uvm_field_int~.
+
+*** `nw_field_object(ARG, FLAG)
+Register an object field. Calls ~`uvm_field_object~.
+
+*** `nw_field_string(ARG, FLAG)
+Register a string field. Calls ~`uvm_field_string~.
+
+*** `nw_field_enum(TYPE, ARG, FLAG)
+Register an enum field. Calls ~`uvm_field_enum~.
+
+*** `nw_field_real(ARG, FLAG)
+Register a real field. Calls ~`uvm_field_real~.
+
+** Reporting Macros
+
+*** `nw_info(ID, MSG, VERBOSITY)
+Print an informational message. Calls ~`uvm_info~.
+
+*** `nw_warning(ID, MSG)
+Print a warning message. Calls ~`uvm_warning~.
+
+*** `nw_error(ID, MSG)
+Print an error message. Calls ~`uvm_error~.
+
+*** `nw_fatal(ID, MSG)
+Print a fatal message and exit. Calls ~`uvm_fatal~.
+
+** Sequence Macros
+
+*** `nw_do(SEQ_OR_ITEM)
+Execute a sequence or item. Calls ~`uvm_do~.
+
+*** `nw_do_with(SEQ_OR_ITEM, CONSTRAINTS)
+Execute with constraints. Calls ~`uvm_do_with~.
+
+*** `nw_do_on(SEQ_OR_ITEM, SEQR)
+Execute on a specific sequencer. Calls ~`uvm_do_on~.
+
+*** `nw_send(SEQ_OR_ITEM)
+Send a sequence item. Calls ~`uvm_send~.
+
+*** `nw_create(SEQ_OR_ITEM)
+Create a sequence item. Calls ~`uvm_create~.
+
+* Types and Typedefs
+
+** Severity Levels
+
+*** nw_severity
+Typedef of ~uvm_severity~. Enum type for message severity.
+
+Values:
+- ~NW_INFO~ - Informational message
+- ~NW_WARNING~ - Warning message
+- ~NW_ERROR~ - Error message
+- ~NW_FATAL~ - Fatal error message
+
+** Verbosity Levels
+
+*** nw_verbosity
+Typedef of ~uvm_verbosity~. Enum type for verbosity control.
+
+Values:
+- ~NW_NONE~ (0) - No verbosity
+- ~NW_LOW~ (100) - Low verbosity
+- ~NW_MEDIUM~ (200) - Medium verbosity
+- ~NW_HIGH~ (300) - High verbosity
+- ~NW_FULL~ (400) - Full verbosity
+- ~NW_DEBUG~ (500) - Debug verbosity
+
+** Action Types
+
+*** nw_action
+Typedef of ~uvm_action~. Integer type for reporting actions.
+
+Values:
+- ~NW_NO_ACTION~ - No action
+- ~NW_DISPLAY~ - Display message
+- ~NW_LOG~ - Log to file
+- ~NW_COUNT~ - Count occurrences
+- ~NW_EXIT~ - Exit simulation
+- ~NW_CALL_HOOK~ - Call user hook
+- ~NW_STOP~ - Stop simulation
+
+** Phase Types
+
+*** nw_phase_type
+Typedef of ~uvm_phase_type~. Enum for phase types.
+
+** Sequencer Arbitration
+
+*** nw_sequencer_arb_mode
+Typedef of ~uvm_sequencer_arb_mode~. Enum for sequencer arbitration modes.
+
+Values:
+- ~NW_SEQ_ARB_FIFO~ - FIFO arbitration
+- ~NW_SEQ_ARB_WEIGHTED~ - Weighted arbitration
+- ~NW_SEQ_ARB_RANDOM~ - Random arbitration
+- ~NW_SEQ_ARB_STRICT_FIFO~ - Strict FIFO
+- ~NW_SEQ_ARB_STRICT_RANDOM~ - Strict random
+- ~NW_SEQ_ARB_USER~ - User-defined
+
+** TLM Types
+
+*** nw_tlm_command_e
+Typedef of ~uvm_tlm_command_e~. Enum for TLM commands.
+
+Values:
+- ~NW_TLM_READ_COMMAND~
+- ~NW_TLM_WRITE_COMMAND~
+- ~NW_TLM_IGNORE_COMMAND~
+
+*** nw_tlm_response_status_e
+Typedef of ~uvm_tlm_response_status_e~. Enum for TLM response status.
+
+Values:
+- ~NW_TLM_OK_RESPONSE~
+- ~NW_TLM_INCOMPLETE_RESPONSE~
+- ~NW_TLM_GENERIC_ERROR_RESPONSE~
+- ~NW_TLM_ADDRESS_ERROR_RESPONSE~
+- ~NW_TLM_COMMAND_ERROR_RESPONSE~
+- ~NW_TLM_BURST_ERROR_RESPONSE~
+- ~NW_TLM_BYTE_ENABLE_ERROR_RESPONSE~
+
+** Port Types
+
+*** nw_port_type_e
+Typedef of ~uvm_port_type_e~. Enum for port types.
+
+Values:
+- ~NW_PORT~
+- ~NW_EXPORT~
+- ~NW_IMPLEMENTATION~
+
+** Register Types
+
+*** nw_reg_data_t
+Typedef of ~uvm_reg_data_t~. Bit vector for register data.
+
+*** nw_reg_addr_t
+Typedef of ~uvm_reg_addr_t~. Bit vector for register addresses.
+
+* Configuration Database
+
+** nw_config_db
+
+Typedef of ~uvm_config_db~. Parameterized class for configuration database.
+
+*** Usage Example
+
+#+BEGIN_SRC systemverilog
+// Set configuration
+nw_config_db#(int)::set(this, "*", "num_transactions", 100);
+
+// Get configuration
+int num_trans;
+if (!nw_config_db#(int)::get(this, "", "num_transactions", num_trans))
+  `nw_error("CONFIG", "Failed to get num_transactions")
+#+END_SRC
+
+** Configuration Types
+
+*** nw_config_int
+Typedef of ~uvm_config_int~. Configuration DB for integers.
+
+*** nw_config_string
+Typedef of ~uvm_config_string~. Configuration DB for strings.
+
+*** nw_config_object
+Typedef of ~uvm_config_object~. Configuration DB for objects.
+
+* Phases
+
+All UVM phases are available with ~nw~ prefix.
+
+** Build Phases
+
+- ~nw_build_phase~ - Build phase
+- ~nw_connect_phase~ - Connect phase
+- ~nw_end_of_elaboration_phase~ - End of elaboration
+
+** Run-Time Phases
+
+- ~nw_run_phase~ - Main run phase
+- ~nw_pre_reset_phase~ - Pre-reset phase
+- ~nw_reset_phase~ - Reset phase
+- ~nw_post_reset_phase~ - Post-reset phase
+- ~nw_pre_configure_phase~ - Pre-configure phase
+- ~nw_configure_phase~ - Configure phase
+- ~nw_post_configure_phase~ - Post-configure phase
+- ~nw_pre_main_phase~ - Pre-main phase
+- ~nw_main_phase~ - Main phase
+- ~nw_post_main_phase~ - Post-main phase
+- ~nw_pre_shutdown_phase~ - Pre-shutdown phase
+- ~nw_shutdown_phase~ - Shutdown phase
+- ~nw_post_shutdown_phase~ - Post-shutdown phase
+
+** Cleanup Phases
+
+- ~nw_extract_phase~ - Extract phase
+- ~nw_check_phase~ - Check phase
+- ~nw_report_phase~ - Report phase
+- ~nw_final_phase~ - Final phase
+
+* Factory
+
+** nw_factory
+Typedef of ~uvm_factory~. The UVM factory mechanism.
+
+** nw_object_wrapper
+Typedef of ~uvm_object_wrapper~. Wrapper for factory registration.
+
+* Callbacks
+
+** nw_callback
+Typedef of ~uvm_callback~. Base class for callbacks.
+
+** nw_callbacks
+Typedef of ~uvm_callbacks~. Callback management class.
+
+* Additional Resources
+
+See the main README.org for:
+- Installation instructions
+- Usage examples
+- Directory structure
+- Generation process
+
+* Notes
+
+- All NW types are direct typedefs of UVM types
+- All NW macros directly call UVM macros
+- Functionality is identical to UVM 1.2
+- Case sensitivity is preserved from UVM

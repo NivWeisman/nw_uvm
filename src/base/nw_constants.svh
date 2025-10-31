@@ -1,0 +1,49 @@
+// nw_constants.svh
+// Parameter/constant wrappers for UVM constants
+// Automatically generated - DO NOT EDIT
+
+parameter NW_ABSTRACT     = (1<<14);
+parameter NW_ALL_ON      = 'b000000101010101;
+parameter NW_CHECK_FIELDS = NW_MACRO_EXTRAS+3;
+parameter NW_COMPARE      = (1<<2);
+parameter NW_COPY         = (1<<0);
+parameter NW_DEFAULT     = 'b000010101010101;
+parameter NW_END_DATA_EXTRA = NW_MACRO_EXTRAS+4;
+parameter NW_END_FUNCS     = NW_SETSTR;
+parameter NW_FLAGS        = NW_MACRO_EXTRAS+1;
+parameter NW_FLAGS_OFF   = 0;
+parameter NW_FLAGS_ON    = 'b000000101010101;
+parameter NW_LARGE_STRING = NW_LINE_WIDTH*NW_NUM_LINES*8-1;
+parameter NW_LINE_WIDTH = `NW_LINE_WIDTH;
+parameter NW_MACRO_EXTRAS  = (1<<NW_MACRO_NUMFLAGS);
+parameter NW_MACRO_NUMFLAGS    = 17;
+parameter NW_NOCOMPARE    = (1<<3);
+parameter NW_NOCOPY       = (1<<1);
+parameter NW_NODEFPRINT   = (1<<16);
+parameter NW_NOPACK       = (1<<9);
+parameter NW_NOPRINT      = (1<<5);
+parameter NW_NORECORD     = (1<<7);
+parameter NW_NUM_LINES = `NW_NUM_LINES;
+parameter NW_PACK         = (1<<8);
+parameter NW_PHYSICAL     = (1<<13);
+parameter NW_PRINT        = (1<<4);
+parameter NW_RADIX = 'hf000000; //4 bits setting the radix
+parameter NW_READONLY     = (1<<15);
+parameter NW_RECORD       = (1<<6);
+parameter NW_SET           = NW_START_FUNCS+1;
+parameter NW_SETINT        = NW_SET;
+parameter NW_SETOBJ        = NW_START_FUNCS+2;
+parameter NW_SETSTR        = NW_START_FUNCS+3;
+parameter NW_SMALL_STRING = NW_LINE_WIDTH*8-1;
+parameter NW_START_FUNCS  = NW_END_DATA_EXTRA+1;
+parameter NW_STDOUT = 1;  // Writes to standard out and logfile
+parameter NW_STREAMBITS = `NW_MAX_STREAMBITS;
+parameter NW_STR_CRC_POLYNOMIAL = 32'h04c11db6;
+parameter NW_UNPACK       = NW_MACRO_EXTRAS+2;
+parameter int NW_HDL_MAX_WIDTH = `NW_HDL_MAX_WIDTH;
+parameter string nw_cdn_copyright  = "(C) 2007-2014 Cadence Design Systems, Inc.";
+parameter string nw_cy_copyright   = "(C) 2011-2013 Cypress Semiconductor Corp.";
+parameter string nw_mgc_copyright  = "(C) 2007-2014 Mentor Graphics Corporation";
+parameter string nw_nv_copyright   = "(C) 2013-2014 NVIDIA Corporation";
+parameter string nw_revision = `NW_VERSION_STRING;
+parameter string nw_snps_copyright = "(C) 2006-2014 Synopsys, Inc.";
