@@ -1,0 +1,287 @@
+typedef uvm_port_component_base uvm_port_list[string];
+typedef uvm_callbacks#(uvm_phase, uvm_phase_cb) uvm_phase_cb_pool;
+typedef logic [UVM_HDL_MAX_WIDTH-1:0] uvm_hdl_data_t;
+typedef uvm_config_db#(uvm_bitstream_t) uvm_config_int;
+typedef uvm_config_db#(string) uvm_config_string;
+typedef uvm_config_db#(uvm_object) uvm_config_object;
+typedef uvm_config_db#(uvm_object_wrapper) uvm_config_wrapper;
+typedef uvm_config_db#(uvm_sequence_base) uvm_config_seq;
+typedef uvm_callbacks    #(uvm_report_object, uvm_report_catcher) uvm_report_cb;
+typedef uvm_callback_iter#(uvm_report_object, uvm_report_catcher) uvm_report_cb_iter;
+typedef uvm_sequence  #(uvm_sequence_item, uvm_sequence_item) uvm_default_sequence_type;
+typedef uvm_sequencer #(uvm_sequence_item, uvm_sequence_item) uvm_default_sequencer_type;
+typedef uvm_driver    #(uvm_sequence_item, uvm_sequence_item) uvm_default_driver_type;
+typedef uvm_sequencer_param_base #(uvm_sequence_item, uvm_sequence_item) uvm_default_sequencer_param_type;
+typedef uvm_sequencer #(uvm_sequence_item) uvm_virtual_sequencer;
+typedef uvm_object_string_pool #(uvm_barrier) uvm_barrier_pool;
+typedef uvm_object_string_pool #(uvm_event#(uvm_object)) uvm_event_pool;
+typedef enum
+{
+    UVM_TLM_READ_COMMAND,
+    UVM_TLM_WRITE_COMMAND,
+    UVM_TLM_IGNORE_COMMAND
+} uvm_tlm_command_e;
+typedef enum
+{
+    UVM_TLM_OK_RESPONSE = 1,
+    UVM_TLM_INCOMPLETE_RESPONSE = 0,
+    UVM_TLM_GENERIC_ERROR_RESPONSE = -1,
+    UVM_TLM_ADDRESS_ERROR_RESPONSE = -2,
+    UVM_TLM_COMMAND_ERROR_RESPONSE = -3,
+    UVM_TLM_BURST_ERROR_RESPONSE = -4,
+    UVM_TLM_BYTE_ENABLE_ERROR_RESPONSE = -5
+} uvm_tlm_response_status_e;
+typedef uvm_tlm_generic_payload uvm_tlm_gp;
+typedef bit signed [(`UVM_PACKER_MAX_BYTES*8)-1:0] uvm_pack_bitstream_t;
+typedef enum {UVM_APPEND, UVM_PREPEND} uvm_apprepend;
+typedef uvm_config_db#(uvm_object) m_uvm_config_obj_misc;
+typedef uvm_printer_knobs uvm_table_printer_knobs;
+typedef uvm_printer_knobs uvm_tree_printer_knobs;
+typedef enum
+  {
+    UNINITIALIZED_PHASE,
+    BEGIN_REQ,
+    END_REQ,
+    BEGIN_RESP,
+    END_RESP
+  } uvm_tlm_phase_e;
+typedef enum 
+  {
+    UVM_TLM_ACCEPTED,
+    UVM_TLM_UPDATED,
+    UVM_TLM_COMPLETED
+  } uvm_tlm_sync_e;
+typedef enum {
+  UVM_ALL_ACTIVE,
+  UVM_ONE_ACTIVE,
+  UVM_ANY_ACTIVE,
+  UVM_NO_HB_MODE
+} uvm_heartbeat_modes;
+typedef uvm_callbacks #(uvm_objection,uvm_heartbeat_callback) uvm_heartbeat_cbs_t;
+typedef uvm_callbacks #(uvm_objection,uvm_objection_callback) uvm_objection_cbs_t;
+typedef uvm_objection uvm_callbacks_objection;
+typedef uvm_pool#(string, uvm_action) uvm_id_actions_array;
+typedef uvm_pool#(string, UVM_FILE) uvm_id_file_array;
+typedef uvm_pool#(string, int) uvm_id_verbosities_array;
+typedef uvm_pool#(uvm_severity, uvm_severity) uvm_sev_override_array;
+typedef  bit unsigned [`UVM_REG_DATA_WIDTH-1:0]  uvm_reg_data_t ;
+typedef  logic unsigned [`UVM_REG_DATA_WIDTH-1:0]  uvm_reg_data_logic_t ;
+typedef  bit unsigned [`UVM_REG_ADDR_WIDTH-1:0]  uvm_reg_addr_t ;
+typedef  logic unsigned [`UVM_REG_ADDR_WIDTH-1:0]  uvm_reg_addr_logic_t ;
+typedef  bit unsigned [`UVM_REG_BYTENABLE_WIDTH-1:0]  uvm_reg_byte_en_t ;
+typedef  bit [`UVM_REG_CVR_WIDTH-1:0]  uvm_reg_cvr_t ;
+typedef uvm_resource_db#(uvm_reg_cvr_t) uvm_reg_cvr_rsrc_db;
+typedef enum bit [63:0] {
+  UVM_DO_REG_HW_RESET      = 64'h0000_0000_0000_0001,
+  UVM_DO_REG_BIT_BASH      = 64'h0000_0000_0000_0002,
+  UVM_DO_REG_ACCESS        = 64'h0000_0000_0000_0004,
+  UVM_DO_MEM_ACCESS        = 64'h0000_0000_0000_0008,
+  UVM_DO_SHARED_ACCESS     = 64'h0000_0000_0000_0010,
+  UVM_DO_MEM_WALK          = 64'h0000_0000_0000_0020,
+  UVM_DO_ALL_REG_MEM_TESTS = 64'hffff_ffff_ffff_ffff 
+} uvm_reg_mem_tests_e;
+typedef logic signed [UVM_STREAMBITS-1:0] uvm_bitstream_t;
+typedef logic signed [63:0] uvm_integral_t;
+typedef enum {
+   UVM_BIN       = 'h1000000,
+   UVM_DEC       = 'h2000000,
+   UVM_UNSIGNED  = 'h3000000,
+   UVM_UNFORMAT2 = 'h4000000,
+   UVM_UNFORMAT4 = 'h5000000,
+   UVM_OCT       = 'h6000000,
+   UVM_HEX       = 'h7000000,
+   UVM_STRING    = 'h8000000,
+   UVM_TIME      = 'h9000000,
+   UVM_ENUM      = 'ha000000,
+   UVM_REAL      = 'hb000000,
+   UVM_REAL_DEC  = 'hc000000,
+   UVM_REAL_EXP  = 'hd000000,
+   UVM_NORADIX   = 0
+} uvm_radix_enum;
+typedef enum { 
+  UVM_DEFAULT_POLICY = 0, 
+  UVM_DEEP           = 'h400, 
+  UVM_SHALLOW        = 'h800, 
+  UVM_REFERENCE      = 'h1000
+ } uvm_recursion_policy_enum;
+typedef enum bit { UVM_PASSIVE=0, UVM_ACTIVE=1 } uvm_active_passive_enum;
+typedef enum bit [1:0]
+{
+  UVM_INFO,
+  UVM_WARNING,
+  UVM_ERROR,
+  UVM_FATAL
+} uvm_severity;
+typedef uvm_severity uvm_severity_type;
+typedef int uvm_action;
+typedef enum
+{
+  UVM_NO_ACTION = 'b0000000,
+  UVM_DISPLAY   = 'b0000001,
+  UVM_LOG       = 'b0000010,
+  UVM_COUNT     = 'b0000100,
+  UVM_EXIT      = 'b0001000,
+  UVM_CALL_HOOK = 'b0010000,
+  UVM_STOP      = 'b0100000,
+  UVM_RM_RECORD = 'b1000000
+} uvm_action_type;
+typedef enum
+{
+  UVM_NONE   = 0,
+  UVM_LOW    = 100,
+  UVM_MEDIUM = 200,
+  UVM_HIGH   = 300,
+  UVM_FULL   = 400,
+  UVM_DEBUG  = 500
+} uvm_verbosity;
+typedef int UVM_FILE;
+typedef enum
+{
+  UVM_PORT ,
+  UVM_EXPORT ,
+  UVM_IMPLEMENTATION
+} uvm_port_type_e;
+typedef enum
+{
+  UVM_SEQ_ARB_FIFO,
+  UVM_SEQ_ARB_WEIGHTED,
+  UVM_SEQ_ARB_RANDOM,
+  UVM_SEQ_ARB_STRICT_FIFO,
+  UVM_SEQ_ARB_STRICT_RANDOM,
+  UVM_SEQ_ARB_USER
+} uvm_sequencer_arb_mode;
+typedef uvm_sequencer_arb_mode UVM_SEQ_ARB_TYPE; // backward compat
+typedef enum
+{
+  UVM_CREATED   = 1,
+  UVM_PRE_START = 2,
+  UVM_PRE_BODY  = 4,
+  UVM_BODY      = 8,
+  UVM_POST_BODY = 16,
+  UVM_POST_START= 32,
+  UVM_ENDED     = 64,
+  UVM_STOPPED   = 128,
+  UVM_FINISHED  = 256
+} uvm_sequence_state;
+typedef uvm_sequence_state uvm_sequence_state_enum; // backward compat
+typedef enum
+{
+  UVM_SEQ_LIB_RAND,
+  UVM_SEQ_LIB_RANDC,
+  UVM_SEQ_LIB_ITEM,
+  UVM_SEQ_LIB_USER
+} uvm_sequence_lib_mode;
+typedef enum { UVM_PHASE_IMP,
+               UVM_PHASE_NODE,
+               UVM_PHASE_TERMINAL,
+               UVM_PHASE_SCHEDULE,
+               UVM_PHASE_DOMAIN,
+               UVM_PHASE_GLOBAL
+} uvm_phase_type;
+typedef enum { UVM_LT,
+               UVM_LTE,
+               UVM_NE,
+               UVM_EQ,
+               UVM_GT,
+               UVM_GTE
+} uvm_wait_op;
+typedef enum { UVM_RAISED      = 'h01, 
+               UVM_DROPPED     = 'h02,
+               UVM_ALL_DROPPED = 'h04
+} uvm_objection_event;
+typedef uvm_callbacks#(uvm_vreg_field, uvm_vreg_field_cbs) uvm_vreg_field_cb;
+typedef uvm_callback_iter#(uvm_vreg_field, uvm_vreg_field_cbs) uvm_vreg_field_cb_iter;
+typedef uvm_callbacks#(uvm_reg, uvm_reg_cbs) uvm_reg_cb;
+typedef uvm_callback_iter#(uvm_reg, uvm_reg_cbs) uvm_reg_cb_iter;
+typedef uvm_callbacks#(uvm_reg_backdoor, uvm_reg_cbs) uvm_reg_bd_cb;
+typedef uvm_callback_iter#(uvm_reg_backdoor, uvm_reg_cbs) uvm_reg_bd_cb_iter;
+typedef uvm_callbacks#(uvm_mem, uvm_reg_cbs) uvm_mem_cb;
+typedef uvm_callback_iter#(uvm_mem, uvm_reg_cbs) uvm_mem_cb_iter;
+typedef uvm_callbacks#(uvm_reg_field, uvm_reg_cbs) uvm_reg_field_cb;
+typedef uvm_callback_iter#(uvm_reg_field, uvm_reg_cbs) uvm_reg_field_cb_iter;
+typedef uvm_callbacks#(uvm_vreg, uvm_vreg_cbs) uvm_vreg_cb;
+typedef uvm_callback_iter#(uvm_vreg, uvm_vreg_cbs) uvm_vreg_cb_iter;
+typedef struct  {
+	string arg;
+	string args[$];
+	int unsigned used;
+} uvm_cmdline_parsed_arg_t;
+typedef struct {
+  int    level;
+  string name;
+  string type_name;
+  string size;
+  string val;
+} uvm_printer_row_info;
+typedef struct {
+   string path;
+   int offset;
+   int size;
+} uvm_hdl_path_slice;
+typedef struct packed {
+  uvm_reg_addr_t min;
+  uvm_reg_addr_t max;
+  int unsigned stride;
+  } uvm_reg_map_addr_range;
+typedef struct  {
+	string arg;
+	string args[$];
+	int unsigned used;
+} uvm_cmdline_parsed_arg_t;
+typedef struct {
+
+  // Variable: kind
+  //
+  // Kind of access: READ or WRITE.
+  //
+  uvm_access_e kind;
+
+
+  // Variable: addr
+  //
+  // The bus address.
+  //
+  uvm_reg_addr_t addr;
+
+
+  // Variable: data
+  //
+  // The data to write. If the bus width is smaller than the register or
+  // memory width, ~data~ represents only the portion of ~value~ that is
+  // being transferred this bus cycle.
+  //
+  uvm_reg_data_t data;
+
+   
+  // Variable: n_bits
+  //
+  // The number of bits of <uvm_reg_item::value> being transferred by
+  // this transaction.
+
+  int n_bits;
+
+  /*
+  constraint valid_n_bits {
+     n_bits > 0;
+     n_bits <= `UVM_REG_DATA_WIDTH;
+  }
+  */
+
+
+  // Variable: byte_en
+  //
+  // Enables for the byte lanes on the bus. Meaningful only when the
+  // bus supports byte enables and the operation originates from a field
+  // write/read.
+  //
+  uvm_reg_byte_en_t byte_en;
+
+
+  // Variable: status
+  //
+  // The result of the transaction: UVM_IS_OK, UVM_HAS_X, UVM_NOT_OK.
+  // See <uvm_status_e>.
+  //
+  uvm_status_e status;
+
+} uvm_reg_bus_op;
